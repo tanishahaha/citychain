@@ -1,20 +1,41 @@
 
 import React from 'react';
-import {  BsStars } from 'react-icons/bs'
+import { BsStars } from 'react-icons/bs'
 import ComposeTweet from './server-components/ComposeTweet';
-import { getIssues } from '@/lib/supabase/getIssues';
+import { getIssues, getTweetByLocation } from '@/lib/supabase/getIssues';
 import AllIssues from './client-components/AllIssues';
 import { createClient } from '@/utils/supabase/server';
+// import ImageAddDialog from './client-components/ImageAddDialog';
+import { BiPlus } from 'react-icons/bi';
 
 const MainSection = async () => {
-  
+
   const supabase = createClient();
-  const {data:userData,error:userError} = await supabase.auth.getUser();
+  const { data: userData, error: userError } = await supabase.auth.getUser();
+  console.log(userData)
+
 
   // if(userError) return;
-  
 
-  const resData = await getIssues(userData.user?.id);
+  const userId = userData.user?.id
+
+
+  const resData = await getIssues(userId);
+
+  const { data: profileData, error: profileError } = await supabase.from('profiles').select('latitude, longitude').eq('id', userId).single();
+
+  if (profileError) return;
+
+  const { latitude, longitude } = profileData || {};
+
+  let locationBasedTweets = null;
+  if (latitude && longitude) {
+    locationBasedTweets = await getTweetByLocation(latitude, longitude);
+  }
+
+
+
+
   // console.log(resData);
 
   return (
@@ -26,20 +47,46 @@ const MainSection = async () => {
       </div>
 
       <div className='border-t border-b border-black/10 px-4 flex py-6 space-x-2 relative mt-4'>
-        <div className='w-10 h-10 bg-slate-400 rounded-full '></div>
+
         <ComposeTweet />
       </div>
 
       <div className='flex flex-col'>
-        {
+        {/* {
           resData?.error && <div>Something wrong with the server</div>
-        }
+        } */}
         {
-          resData?.data && resData.data.map((issue, i) => (
-            <AllIssues key={issue.id} issue={issue} userId={userData.user?.id}/>
+          locationBasedTweets && locationBasedTweets.data?.map(({ likes, profile, tweet }) => (
+            <AllIssues key={tweet.id} issue={{
+              userProfiles: {
+                ...profile,
+              },
+              tweets: {
+                ...tweet,
+              }
+            }} userId={userData.user?.id} />
           ))
         }
-      </div>  
+
+        {/* {resData &&
+          resData.map(({ likes, tweet, profiles, hasLiked }) => {
+            return (
+              <AllIssues
+                key={tweet.id}
+                issue={{
+                  userProfiles:{
+                    ...profiles,
+                  },
+                  tweets:{
+                    ...tweet,
+                  }
+                }
+                  userId={userData.user?.id}
+                
+              />
+            );
+          })} */}
+      </div>
     </main>
   )
 }

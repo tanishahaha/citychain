@@ -1,6 +1,6 @@
 {
-  "id": "7ba2222a-89eb-49a3-bd0e-ec71e64f922c",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "a6d771a3-b480-49af-bd76-7abcb0f9a40e",
+  "prevId": "4449dd35-caa6-46fc-9de3-2ca759357527",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -280,7 +280,7 @@
           "name": "reply_id",
           "type": "uuid",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         }
       },
       "indexes": {},
@@ -364,6 +364,20 @@
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
+        },
+        "category": {
+          "name": "category",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "''"
+        },
+        "images": {
+          "name": "images",
+          "type": "text[]",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "ARRAY[]::text[]"
         }
       },
       "indexes": {},

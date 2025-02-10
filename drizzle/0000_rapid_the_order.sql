@@ -1,24 +1,24 @@
 CREATE TABLE IF NOT EXISTS "bookmarks" (
-	"id" serial PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
-	"user_id" serial NOT NULL,
-	"tweet_id" serial NOT NULL,
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"user_id" uuid NOT NULL,
+	"tweet_id" uuid NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "hashtags" (
-	"id" serial PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"name" text NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "likes" (
-	"id" serial PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
-	"user_id" serial NOT NULL,
-	"tweet_id" serial NOT NULL,
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"user_id" uuid NOT NULL,
+	"tweet_id" uuid NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "profiles" (
-	"id" serial PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL,
 	"username" text NOT NULL,
 	"full_name" text,
@@ -27,24 +27,24 @@ CREATE TABLE IF NOT EXISTS "profiles" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "replies" (
-	"id" serial PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"text" text NOT NULL,
-	"user_id" serial NOT NULL,
-	"tweet_id" serial NOT NULL,
-	"reply_id" serial NOT NULL
+	"user_id" uuid NOT NULL,
+	"tweet_id" uuid NOT NULL,
+	"reply_id" uuid NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "tweet" (
-	"id" serial PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"text" text NOT NULL,
-	"profile_id" serial NOT NULL,
+	"profile_id" uuid NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "tweet_hashtag" (
-	"tweet_id" serial NOT NULL,
-	"hashtag_id" serial NOT NULL
+	"tweet_id" uuid,
+	"hashtag_id" uuid
 );
 --> statement-breakpoint
 DO $$ BEGIN

@@ -1,6 +1,6 @@
 {
-  "id": "9003c06d-28de-44f8-ba28-767d6c43cc52",
-  "prevId": "7ec8593c-5cdd-4810-adeb-179f62ce6d66",
+  "id": "4449dd35-caa6-46fc-9de3-2ca759357527",
+  "prevId": "7ba2222a-89eb-49a3-bd0e-ec71e64f922c",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -10,20 +10,20 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "uuid",
           "primaryKey": true,
           "notNull": true,
           "default": "gen_random_uuid()"
         },
         "user_id": {
           "name": "user_id",
-          "type": "serial",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
         "tweet_id": {
           "name": "tweet_id",
-          "type": "serial",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
@@ -95,7 +95,7 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "uuid",
           "primaryKey": true,
           "notNull": true,
           "default": "gen_random_uuid()"
@@ -118,20 +118,20 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "uuid",
           "primaryKey": true,
           "notNull": true,
           "default": "gen_random_uuid()"
         },
         "user_id": {
           "name": "user_id",
-          "type": "serial",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
         "tweet_id": {
           "name": "tweet_id",
-          "type": "serial",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
@@ -203,7 +203,7 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "uuid",
           "primaryKey": true,
           "notNull": true,
           "default": "gen_random_uuid()"
@@ -253,7 +253,7 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "uuid",
           "primaryKey": true,
           "notNull": true,
           "default": "gen_random_uuid()"
@@ -266,21 +266,21 @@
         },
         "user_id": {
           "name": "user_id",
-          "type": "serial",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
         "tweet_id": {
           "name": "tweet_id",
-          "type": "serial",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
         "reply_id": {
           "name": "reply_id",
-          "type": "serial",
+          "type": "uuid",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         }
       },
       "indexes": {},
@@ -334,7 +334,7 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "uuid",
           "primaryKey": true,
           "notNull": true,
           "default": "gen_random_uuid()"
@@ -345,9 +345,9 @@
           "primaryKey": false,
           "notNull": true
         },
-        "profileId": {
-          "name": "profileId",
-          "type": "serial",
+        "profile_id": {
+          "name": "profile_id",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
@@ -364,16 +364,23 @@
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
+        },
+        "images": {
+          "name": "images",
+          "type": "text[]",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "ARRAY[]::text[]"
         }
       },
       "indexes": {},
       "foreignKeys": {
-        "tweet_profileId_profiles_id_fk": {
-          "name": "tweet_profileId_profiles_id_fk",
+        "tweet_profile_id_profiles_id_fk": {
+          "name": "tweet_profile_id_profiles_id_fk",
           "tableFrom": "tweet",
           "tableTo": "profiles",
           "columnsFrom": [
-            "profileId"
+            "profile_id"
           ],
           "columnsTo": [
             "id"
@@ -391,15 +398,15 @@
       "columns": {
         "tweet_id": {
           "name": "tweet_id",
-          "type": "serial",
+          "type": "uuid",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "hashtag_id": {
           "name": "hashtag_id",
-          "type": "serial",
+          "type": "uuid",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         }
       },
       "indexes": {},

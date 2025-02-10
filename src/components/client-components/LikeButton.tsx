@@ -22,6 +22,7 @@ const LikeButton = ({ issueId, likeCount, isLiked }: LikeButtonProps) => {
 
   return (
     <button disabled={isLikePending} onClick={() => {
+      
       supabase.auth.getUser().then((res) => {
         if (res.data && res.data.user) {
           const user = res.data.user;

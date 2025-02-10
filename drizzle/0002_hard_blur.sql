@@ -1,0 +1,1 @@
+ALTER TABLE "tweet" ADD COLUMN "category" text DEFAULT '' NOT NULL;
