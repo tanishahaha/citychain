@@ -28,6 +28,15 @@ export const tweet = pgTable("tweet", {
 
 });
 
+export const notifications = pgTable('notifications', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  user_id: uuid('user_id'), // Optional: Who the notification is for (null if system-wide)
+  tweet_id: uuid('tweet_id').references(() => tweet.id), // Links to the issue
+  message: text('message').notNull(), // Notification message
+  created_at: timestamp('created_at').defaultNow(), // When it was created
+  read: text('read').default("false"), // Whether it’s been read
+});
+
 export type Tweet= InferSelectModel<typeof tweet>;
 export type Profile= InferSelectModel<typeof profiles>;
 export type Like = InferSelectModel<typeof likes>;

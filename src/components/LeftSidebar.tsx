@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { BsThreeDots } from 'react-icons/bs';
-import { FaHome, FaHashtag, FaBell, FaEnvelope, FaUserCircle, FaLink } from 'react-icons/fa';
+import { FaHome, FaHashtag, FaBell, FaEnvelope, FaUserCircle, FaLink, FaHammer, FaCheck } from 'react-icons/fa';
 import { PiBookmarkSimpleFill } from 'react-icons/pi';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -62,7 +62,7 @@ const LeftSidebar = () => {
   const NavigationItems = [
     { title: 'Home', icon: FaHome, link: '/' },
     { title: 'Explore', icon: FaHashtag, link: '/explore' },
-    { title: 'Notifications', icon: FaBell, link: '/' },
+    { title: 'Notifications', icon: FaBell, link: '/notifications' },
     { title: 'Messages', icon: FaEnvelope, link: '/message' },
     { title: 'Profile', icon: FaUserCircle, link: '/profile' },
   ];
@@ -70,7 +70,9 @@ const LeftSidebar = () => {
   const AuthorityNavigationItems = [
     { title: 'Home', icon: FaHome, link: '/' },
     { title: 'Issues', icon: FaHashtag, link: '/authorityexplore' },
-    { title: 'Notifications', icon: FaBell, link: '/authoritynotifications' },
+    { title: 'Notifications', icon: FaBell, link: '/notifications' },
+    {title: 'Claimed',icon:FaHammer,link:'/claimed'},
+    {title: 'Solved',icon:FaCheck,link:'/solved'},
     { title: 'Profile', icon: FaUserCircle, link: '/profile' },
   ];
 

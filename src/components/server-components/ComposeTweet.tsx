@@ -7,7 +7,8 @@ import { toast, Toaster } from 'sonner';
 import FormClientComponent from '../client-components/FormClientComponent';
 import { revalidatePath } from 'next/cache';
 import { db } from '@/lib/db/';
-import { tweet } from '@/lib/db/schema';
+import { notifications, tweet } from '@/lib/db/schema';
+import { redirect } from 'next/navigation';
 
 const ComposeTweet = () => {
 
@@ -83,14 +84,30 @@ const ComposeTweet = () => {
       longitude: parsedLongitude,
       location_name: locationName,
       title: title?.toString(),
+      status:"pending",
 
     }).returning().catch(() => {
       err = "something wrong with serverr"
     });
     console.log(res)
+    const { data: profileData } = await supabase
+      .from('profiles')
+      .select('full_name')
+      .eq('id', profileId)
+      .single();
 
-    revalidatePath('/')
-    return { data: res, error: err };
+    const userName = profileData?.full_name || userData.user.email;
+
+    // Insert notification for new issue
+    await db.insert(notifications).values({
+      tweet_id: tweetId,
+      message: `New issue "${title || 'Unnamed Issue'}" posted by ${userName}`,
+      user_id: null, // System-wide; could target authorities
+    });
+
+    revalidatePath('/');
+    redirect('/');
+    return { data: res, error: null };
 
 
   }
