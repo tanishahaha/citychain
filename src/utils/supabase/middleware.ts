@@ -1,6 +1,7 @@
 import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
+import { getUserData } from '@/actions/get-user-data'
 
 
 export async function updateSession(request: NextRequest) {
@@ -56,7 +57,18 @@ export async function updateSession(request: NextRequest) {
     }
   )
 
-  await supabase.auth.getUser()
+  
+  const { data: { user }, error } = await supabase.auth.getUser();
 
+  // Define paths that don't require authentication
+  const publicPaths = ['/login', '/signup', '/api']; // Add any other public routes here
+  const isPublicPath = publicPaths.some(path => 
+    request.nextUrl.pathname.startsWith(path)
+  );
+
+  // If no user is authenticated and the current path is not a public path, redirect to login
+  if (!user && !isPublicPath) {
+    return NextResponse.redirect(new URL('/login', request.url));
+  }
   return response
 }

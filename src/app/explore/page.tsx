@@ -1,11 +1,10 @@
 import Explore from '@/components/Explore'
 import React from 'react'
-import SharedLayout from '../sharedlayout'
 
 const page = () => {
 
     return (
-            <Explore/>
+        <Explore />
     )
 }
 

@@ -1,9 +1,10 @@
 "use client";
 import { getTweetByCategory } from '@/lib/supabase/getIssues';
 import { createClient } from '@/utils/supabase/client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BsSearch } from 'react-icons/bs';
 import dynamic from 'next/dynamic';
+import { clientCheckIfRegistered } from '@/actions/client-check-if-registered';
 
 const AllIssues = dynamic(() => import('./client-components/AllIssues'), { ssr: false });
 
@@ -11,6 +12,8 @@ const Explore = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [issues, setIssues] = useState<any[]>([]);
   const [userId, setUserId] = useState<string | undefined>(undefined);
+  const [isRegistered, setIsRegistered] = useState<boolean>(false); // State to track registration status
+  const [loading, setLoading] = useState<boolean>(true); // Optional: to handle loading state
 
   const categories = [
     "Environmental",
@@ -20,6 +23,16 @@ const Explore = () => {
     "Healthcare",
     "Transportation"
   ];
+
+  // Fetch registration status when component mounts
+  useEffect(() => {
+    const checkRegistration = async () => {
+      const registered = await clientCheckIfRegistered();
+      setIsRegistered(registered);
+      setLoading(false); // Set loading to false once check is complete
+    };
+    checkRegistration();
+  }, []); // Empty dependency array means this runs once on mount
 
   const onCategoryClick = async (category: string) => {
     const supabase = createClient();
@@ -43,6 +56,11 @@ const Explore = () => {
 
     setIssues(fetchedIssues.data);
   };
+
+  // Optional: Render a loading state while checking registration
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <section className='ml-[275px] py-4 px-6 border-l border-black/10 h-full w-full min-h-screen'>
@@ -72,6 +90,7 @@ const Explore = () => {
                 onClick={() => onCategoryClick(category)}
               >
                 <div className='font-semibold text-sm'>👉{category}</div>
+
                 {/* <div className='text-xs text-neutral-400'>35.4k</div> */}
               </div>
             ))}
@@ -84,12 +103,8 @@ const Explore = () => {
             key={tweet.id}
             userId={userId}
             issue={{
-              userProfiles: {
-                ...profile,
-              },
-              tweets: {
-                ...tweet,
-              }
+              userProfiles: { ...profile },
+              tweets: { ...tweet },
             }}
           />
         ))}

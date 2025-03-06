@@ -7,12 +7,17 @@ import AllIssues from './client-components/AllIssues';
 import { createClient } from '@/utils/supabase/server';
 // import ImageAddDialog from './client-components/ImageAddDialog';
 import { BiPlus } from 'react-icons/bi';
+import { Button } from './ui/button';
+import RegisterAuthority from './server-components/RegisterAuthority';
+import { checkIfRegistered } from '@/actions/check-if-registered';
 
 const MainSection = async () => {
 
   const supabase = createClient();
   const { data: userData, error: userError } = await supabase.auth.getUser();
   console.log(userData)
+
+  const isRegistered = await checkIfRegistered();
 
 
   // if(userError) return;
@@ -41,20 +46,25 @@ const MainSection = async () => {
   return (
 
     <main className='ml-[275px] py-4 px-6 border-l  border-black/10 h-full w-full min-h-screen'>
-      <div className='flex w-full items-center justify-between text-xl'>
+      <div className='flex w-full items-center justify-between text-xl border-b border-black/10 py-4'>
         <h1 className=''>Home</h1>
-        <BsStars className='text-xl' />
+
+        {
+          isRegistered ? <BsStars size={24} /> : <RegisterAuthority />
+        }
+
       </div>
 
-      <div className='border-t border-b border-black/10 px-4 flex py-6 space-x-2 relative mt-4'>
 
-        <ComposeTweet />
-      </div>
+
+
+      {
+        !isRegistered && <div className=' border-b border-black/10 px-4 flex py-4 space-x-2 relative mt-4'><ComposeTweet /></div>
+      }
+
 
       <div className='flex flex-col'>
-        {/* {
-          resData?.error && <div>Something wrong with the server</div>
-        } */}
+
         {
           locationBasedTweets && locationBasedTweets.data?.map(({ likes, profile, tweet }) => (
             <AllIssues key={tweet.id} issue={{
@@ -68,24 +78,25 @@ const MainSection = async () => {
           ))
         }
 
-        {/* {resData &&
-          resData.map(({ likes, tweet, profiles, hasLiked }) => {
+        {/* {userData.user === null && resData &&
+          resData.data?.map(({ likes, tweet, profile, hasLiked }) => {
             return (
               <AllIssues
                 key={tweet.id}
                 issue={{
-                  userProfiles:{
-                    ...profiles,
+                  userProfiles: {
+                    ...profile,
                   },
-                  tweets:{
+                  tweets: {
                     ...tweet,
                   }
-                }
-                  userId={userData.user?.id}
-                
+                }}
+                userId={''}
+
               />
             );
           })} */}
+
       </div>
     </main>
   )

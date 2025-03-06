@@ -22,7 +22,9 @@ export const tweet = pgTable("tweet", {
   latitude: real("latitude"),
   longitude: real("longitude"),
   location_name: text("location_name"),
-  title:text("title")
+  title:text("title"),
+  status: text("status").notNull(),
+  authority:text("authority")
 
 });
 

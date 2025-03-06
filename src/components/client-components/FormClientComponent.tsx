@@ -161,13 +161,13 @@ const FormClientComponent = ({ serverAction }: FormClientComponentProps) => {
           </div>
         </DialogTrigger>
         <DialogContent className='max-w-2xl h-[500px] overflow-hidden'>
-          <div className='overflow-y-auto max-h-[450px] p-2'>
+          <div className='overflow-y-auto max-h-[450px] p-2 scrollbar-hide'>
             <form className='flex flex-col w-full px-2 py-8'>
               <input
                 type="text"
                 name="title"
                 placeholder="Issue Name(2-4 words long)"
-                className='w-full text-base bg-transparent border-none outline-none my-2'
+                className='w-full text-base bg-transparent border-none outline-none my-2 mb-2'
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 required
