@@ -13,7 +13,9 @@
 /.next/
 /out/
 
-backend/
+/backend/
+/venv/
+
 venv/
 
 # production
